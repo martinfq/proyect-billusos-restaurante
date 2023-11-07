@@ -1,0 +1,20 @@
+### Obtener todos los proyectos
+GET http://127.0.0.1:8000/api/projects/
+
+###Crear un nuevo proyecto
+POST http://127.0.0.1:8000/api/projects/
+Content-Type: application/json
+
+{
+    "title": "proyecto web",
+    "description": "usando django",
+    "technology": "django"
+}
+
+### Modificar un projecto
+PATCH http://127.0.0.1:8000/api/projects/1
+Content-Type: application/json
+
+{
+    "title": "mi primer proyecto web"
+}
