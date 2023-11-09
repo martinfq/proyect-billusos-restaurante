@@ -1,5 +1,9 @@
-### Obtener todos los proyectos
-GET http://127.0.0.1:8000/api/projects/
+### Obtener todos los datos de los restaurantes
+GET http://127.0.0.1:8000/api/restaurants/
+### Obtener todos los datos de los menus
+GET http://127.0.0.1:8000/api/menus/
+### Obtener todos los datos de los menus y su correspondiente restaurant
+GET http://127.0.0.1:8000/api/restaurant-menu/
 
 ###Crear un nuevo proyecto
 POST http://127.0.0.1:8000/api/projects/
