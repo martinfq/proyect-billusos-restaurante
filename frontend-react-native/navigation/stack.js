@@ -1,13 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import HomeScreen from '../screens/home';
+import RestaurantDetailScreen from '../screens/restaurant-details';
 
 const Stack = createStackNavigator();
 
 export const HomeStack = () => {
-    const navigation = useNavigation()
     return (
-        <Stack.Navigator screenOptions={() => navOptions(navigation)}>
-            <Stack.Screen name="Home" component={HomeTabs} />
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Restaurant" component={RestaurantDetailScreen} />
         </Stack.Navigator>
     );
 }

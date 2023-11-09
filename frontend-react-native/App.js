@@ -3,11 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { MyDrawer } from './navigation/drawer';
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text } from 'react-native';
+import { HomeStack } from './navigation/stack';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Text>Hola</Text>
+      <HomeStack />
       <StatusBar style='light' />
     </NavigationContainer>
 
