@@ -1,12 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View, Text, Button } from "react-native";
-import RestaurantList from "../components/restaurants/restaurant-list";
+import HomeMain from "../components/home/main-home";
 
 const HomeScreen = () => {
-    const navigation = useNavigation()
     return (
         <View style={style.screen}>
-            <RestaurantList />
+            <HomeMain />
         </View>
     );
 }

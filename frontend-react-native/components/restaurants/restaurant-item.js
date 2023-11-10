@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 const RestaurantItem = ({ id, name }) => {
     const navigation = useNavigation()
     return (
-        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Restaurant', { restaurantID: id })} >
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('RestaurantDetail', { restaurantID: id })} >
             <Text>{name}</Text>
         </TouchableOpacity>
     );
