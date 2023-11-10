@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 # Create your models here.
 
@@ -11,7 +11,7 @@ class Restaurant(models.Model):
     logo_url = models.URLField( blank=True, null=True)
     city = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    num_menus = models.IntegerField(default=0)
+    num_menus = models.IntegerField(default=0, editable=False)
 
 
 class Menu(models.Model):
@@ -21,14 +21,8 @@ class Menu(models.Model):
     is_spicy = models.BooleanField()
     have_food_allergies = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
-    restaurant_id = models.OneToOneField(Restaurant, on_delete=models.CASCADE)
+    restaurant_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
-
-# class RestaurantMenu(models.Model):
-#     restaurant_id = models.ForeignKey(
-#         Restaurant, on_delete=models.CASCADE)
-#     menu_id = models.ForeignKey(
-#         Menu, on_delete=models.CASCADE)
 
 @receiver(post_save, sender=Menu)
 def increase_num_menus(sender, instance, created, **kwargs):
@@ -37,7 +31,16 @@ def increase_num_menus(sender, instance, created, **kwargs):
         instance.restaurant_id.num_menus += 1
         instance.restaurant_id.save()
 # Registra la señal
+
+
+@receiver(post_delete, sender=Menu)
+def decrease_num_menus_on_delete(sender, instance, **kwargs):
+    # Disminuir el valor de num_menus en el restaurante correspondiente
+    instance.restaurant_id.num_menus -= 1
+    instance.restaurant_id.save()
+
 post_save.connect(increase_num_menus, sender=Menu)
+post_delete.connect(decrease_num_menus_on_delete, sender=Menu)
 
 
 
