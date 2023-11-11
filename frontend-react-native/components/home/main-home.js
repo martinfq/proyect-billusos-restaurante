@@ -1,10 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-
+import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { useWindowDimensions } from 'react-native';
 
 
 const HomeMain = () => {
+
+    const { height, width } = useWindowDimensions();
 
     const [searchQuery, setSearchQuery] = useState("")
 
@@ -19,11 +21,20 @@ const HomeMain = () => {
     const navigation = useNavigation()
     return (
         <View style={styles.screen}>
-            <Text style={{ paddingBottom: 20 }}>Home Page Billusos</Text>
+            <View style={{ alignItems: "center" }}>
+
+                <Text style={{ paddingBottom: 20 }}>Home Page Billusos</Text>
+                <Image
+                    style={{ width: width, height: 200, marginBottom: 20, borderRadius: 10 }}
+                    source={{
+                        uri: 'https://media.istockphoto.com/id/1307190527/es/foto/feliz-camarero-sirviendo-comida-a-un-grupo-de-amigos-en-un-pub.jpg?s=612x612&w=0&k=20&c=-BICd4vjkPYTHSW4zCdVd1vqbjG2Guz07i9Ctm9nzo4=',
+                    }}
+                />
+            </View>
             <View style={styles.searchbar}>
                 <TextInput
                     placeholder='Buscar...'
-                    style={{ margin: 10 }}
+                    style={{ margin: 10, fontSize: 25 }}
                     autoCapitalize="none"
                     clearButtonMode='always'
                     value={searchQuery}
@@ -37,7 +48,7 @@ const HomeMain = () => {
 
 const styles = StyleSheet.create({
     screen: {
-        padding: 10
+        padding: 10,
     },
     searchbar: {
         alignContent: 'space-around',

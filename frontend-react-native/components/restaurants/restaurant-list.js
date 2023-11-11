@@ -4,9 +4,10 @@ import { RefreshControl } from "react-native-gesture-handler";
 import RestaurantItem from "./restaurant-item";
 import { useEffect, useState } from "react";
 
-const API_ENDPOINT = "http://127.0.0.1:8081/api/restaurants/"
+const API_ENDPOINT = "http://192.168.0.138:8080/api/"
 
-const text = 'tacos/'
+let fetchUrl = "restaurants/"
+
 
 const RestaurantList = ({ searchQuery }) => {
 
@@ -28,9 +29,11 @@ const RestaurantList = ({ searchQuery }) => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(API_ENDPOINT + searchQuery)
+            if (searchQuery === "") {
+                fetchUrl = "all-restaurants/"
+            }
+            const response = await fetch(API_ENDPOINT + fetchUrl + searchQuery)
             const data = await response.json()
-            console.log(data)
             setData(data)
 
         } catch (error) {
@@ -40,7 +43,7 @@ const RestaurantList = ({ searchQuery }) => {
 
 
     const renderItem = ({ item }) => {
-        return <RestaurantItem id={item.id} name={item.name} />
+        return <RestaurantItem id={item.id} name={item.name} logo_url={item.logo_url} restaurant_type={item.restaurant_type} />
     }
     return (
         <View>
