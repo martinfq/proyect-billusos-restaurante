@@ -1,10 +1,19 @@
 import { StyleSheet, View } from "react-native";
 import RestaurantList from "../components/restaurants/restaurant-list";
+import { useRoute } from "@react-navigation/native";
+import React, { useState } from "react";
 
-const RestaurantScreen = () => {
+const RestaurantScreen = ({ navigation }) => {
+
+    const route = useRoute()
+    const { query } = route.params
+    React.useLayoutEffect(() => {
+        navigation.setOptions({ title: query });
+    }, [navigation])
+
     return (
         <View style={style.screen}>
-            <RestaurantList />
+            <RestaurantList searchQuery={query} />
         </View>
     );
 }

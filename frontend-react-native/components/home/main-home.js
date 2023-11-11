@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
-const API_ENDPOINT = ""
+
 
 const HomeMain = () => {
 
@@ -10,6 +10,10 @@ const HomeMain = () => {
 
     const handleSearch = (query) => {
         setSearchQuery(query)
+    }
+    const handleNavigation = () => {
+        navigation.navigate('Restaurant', { query: searchQuery.toLowerCase() })
+        setSearchQuery("")
     }
 
     const navigation = useNavigation()
@@ -23,9 +27,9 @@ const HomeMain = () => {
                     autoCapitalize="none"
                     clearButtonMode='always'
                     value={searchQuery}
-                    onChange={(query) => handleSearch(query)}
+                    onChangeText={(query) => handleSearch(query)}
                 />
-                <Button title="Icon" onPress={() => navigation.navigate('Restaurant')} />
+                <Button title="Buscar" onPress={handleNavigation} />
             </View>
         </View>
     );

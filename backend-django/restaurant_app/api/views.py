@@ -28,7 +28,7 @@ class FiltrarPorNombreView(APIView):
         print(resultados)
         serializer = RestaurantSerializer(resultados, many=True)
 
-        return Response({'rest': serializer.data})
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def menu_list(request, restaurant_id):
@@ -39,7 +39,7 @@ def menu_list(request, restaurant_id):
     serializer = MenuSerializer(menus, many=True)
 
     # Devolver la lista serializada en formato JSON
-    return Response({'menus': serializer.data})
+    return Response(serializer.data)
 
 # @api_view(['GET'])
 # def rest_list(request, name):
