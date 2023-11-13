@@ -7,8 +7,9 @@ const RestaurantScreen = ({ navigation }) => {
 
     const route = useRoute()
     const { query } = route.params
+
     React.useLayoutEffect(() => {
-        navigation.setOptions({ title: query });
+        navigation.setOptions({ title: query ? query : "Los mas visitados" });
     }, [navigation])
 
     return (

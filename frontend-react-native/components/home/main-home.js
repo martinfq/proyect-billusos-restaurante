@@ -1,12 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { useState, useEffect } from "react";
+import { Button, FlatList, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import { useWindowDimensions } from 'react-native';
+import TypeItem from "./type-item";
+import { RefreshControl } from "react-native-gesture-handler";
 
+const API_ENDPOINT = "http://192.168.0.138:8080/api/food-type/"
 
 const HomeMain = () => {
 
-    const { height, width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
 
     const [searchQuery, setSearchQuery] = useState("")
 
@@ -19,6 +22,40 @@ const HomeMain = () => {
     }
 
     const navigation = useNavigation()
+
+    const [data, setData] = useState([])
+
+    const [isLoading, setIsLoading] = useState(false)
+
+
+    const handleRefresh = () => {
+        console.log('refreshing')
+        setIsLoading(prevState => !prevState)
+    }
+
+
+    useEffect(() => {
+        fetchData()
+    }, [isLoading])
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch(API_ENDPOINT)
+            const data = await response.json()
+            setData(data)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
+    const renderItem = ({ item }) => {
+        return (
+            <TypeItem name={item.name} />
+        )
+    }
+
     return (
         <View style={styles.screen}>
             <View style={{ alignItems: "center" }}>
@@ -41,6 +78,21 @@ const HomeMain = () => {
                     onChangeText={(query) => handleSearch(query)}
                 />
                 <Button title="Buscar" onPress={handleNavigation} />
+            </View>
+
+            <View style={{ justifyContent: "space-around" }}>
+                <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    renderItem={renderItem}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={false}
+                            onRefresh={handleRefresh}
+                        />
+                    }
+                    numColumns={2}
+                />
             </View>
         </View>
     );

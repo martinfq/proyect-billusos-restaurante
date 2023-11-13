@@ -13,33 +13,84 @@ const RestaurantList = ({ searchQuery }) => {
 
 
     const [data, setData] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+    const [isLoading, setIsLoading] = useState(true);
 
-    console.log(searchQuery)
+    //console.log(searchQuery)
 
     const handleRefresh = () => {
         console.log('refreshing')
-        setIsLoading(prevState => !prevState)
+        setRefresh(prevState => !prevState)
     }
 
 
     useEffect(() => {
-        fetchData()
-    }, [isLoading])
-
-    const fetchData = async () => {
-        try {
-            if (searchQuery === "") {
-                fetchUrl = "all-restaurants/"
-            }
-            const response = await fetch(API_ENDPOINT + fetchUrl + searchQuery)
-            const data = await response.json()
-            setData(data)
-
-        } catch (error) {
-            console.error(error)
+        if (isLoading) {
+            fetchDataAndType();
         }
-    }
+    }, [isLoading, refresh])
+
+    const fetchDataAndType = async () => {
+        try {
+            // Fetch data
+            const response = await fetch("http://192.168.0.138:8080/api/all-restaurants/");
+            const data = await response.json();
+            const newData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+            setData(newData);
+
+            // Fetch type
+            let updatedData = [];
+            for (const item of newData) {
+                try {
+                    const typeResponse = await fetch(API_ENDPOINT + "food-type/" + item.restaurant_type);
+                    const typeData = await typeResponse.json();
+                    item["restaurant_type"] = typeData.name;
+                    updatedData.push(item);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            setData(updatedData);
+            setIsLoading(false);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    // const fetchData2 = async () => {
+    //     try {
+    //         if (searchQuery === "") {
+    //             fetchUrl = "all-restaurants/"
+    //         }
+    //         const urlToFetch = API_ENDPOINT + fetchUrl + searchQuery
+    //         const response = await fetch(urlToFetch)
+    //         const data = await response.json()
+
+    //         console.log(data)
+    //         if (!Array.isArray(data)) {
+    //             console.error("La respuesta no es un array:", data);
+    //             return; // o manejar el error de alguna manera
+    //         }
+
+    //         let newData = []
+    //         for (const item of data) {
+    //             try {
+    //                 const typeResponse = await fetch(API_ENDPOINT + "food-type/" + item.restaurant_type);
+    //                 const typeData = await typeResponse.json();
+    //                 item["restaurant_type"] = typeData.name;
+    //                 newData.push(item);
+    //             } catch (error) {
+    //                 console.error(error);
+    //             }
+    //         }
+
+    //         setData(newData)
+
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
+
 
 
     const renderItem = ({ item }) => {
