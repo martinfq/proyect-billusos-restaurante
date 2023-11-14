@@ -3,7 +3,7 @@ from .views import MenuViewSet, RestaurantViewSet, FiltrarPorNombreView, FoodTyp
 from django.urls import path, include
 from . import views
 router = routers.DefaultRouter()
-router.register(r'all-restaurants',RestaurantViewSet)
+router.register(r'all-restaurants',RestaurantViewSet, basename='restaurants')
 router.register(r'menus',MenuViewSet, basename='menus')
 router.register(r'food-type',FoodTypeViewSet)
 

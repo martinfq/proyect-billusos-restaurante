@@ -6,10 +6,7 @@ import { useEffect, useState } from "react";
 
 const API_ENDPOINT = "http://192.168.0.138:8080/api/"
 
-let fetchUrl = "restaurants/"
-
-
-const RestaurantList = ({ searchQuery }) => {
+const RestaurantList = ({ searchQuery, queryType }) => {
 
 
     const [data, setData] = useState([])
@@ -33,9 +30,15 @@ const RestaurantList = ({ searchQuery }) => {
     const fetchDataAndType = async () => {
         try {
             // Fetch data
-            const response = await fetch("http://192.168.0.138:8080/api/all-restaurants/");
+            const response = await fetch(API_ENDPOINT + "all-restaurants/");
             const data = await response.json();
-            const newData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+            let newData = data
+            if (searchQuery && queryType === "name") {
+                newData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+            }
+            if (searchQuery && queryType === "type") {
+                newData = data.filter(item => item.restaurant_type === searchQuery);
+            }
             setData(newData);
 
             // Fetch type
@@ -57,41 +60,6 @@ const RestaurantList = ({ searchQuery }) => {
             console.error(error);
         }
     };
-    // const fetchData2 = async () => {
-    //     try {
-    //         if (searchQuery === "") {
-    //             fetchUrl = "all-restaurants/"
-    //         }
-    //         const urlToFetch = API_ENDPOINT + fetchUrl + searchQuery
-    //         const response = await fetch(urlToFetch)
-    //         const data = await response.json()
-
-    //         console.log(data)
-    //         if (!Array.isArray(data)) {
-    //             console.error("La respuesta no es un array:", data);
-    //             return; // o manejar el error de alguna manera
-    //         }
-
-    //         let newData = []
-    //         for (const item of data) {
-    //             try {
-    //                 const typeResponse = await fetch(API_ENDPOINT + "food-type/" + item.restaurant_type);
-    //                 const typeData = await typeResponse.json();
-    //                 item["restaurant_type"] = typeData.name;
-    //                 newData.push(item);
-    //             } catch (error) {
-    //                 console.error(error);
-    //             }
-    //         }
-
-    //         setData(newData)
-
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
-
-
 
     const renderItem = ({ item }) => {
         return <RestaurantItem id={item.id} name={item.name} logo_url={item.logo_url} restaurant_type={item.restaurant_type} />

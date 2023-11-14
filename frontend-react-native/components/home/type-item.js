@@ -1,8 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
-
-const TypeItem = ({ name }) => {
+const TypeItem = ({ name, id }) => {
+    const navigation = useNavigation()
     return (
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Restaurant', { query: id, queryType: "type" })}>
             <View >
                 <Text>{name}</Text>
             </View>

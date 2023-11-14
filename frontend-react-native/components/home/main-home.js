@@ -17,7 +17,7 @@ const HomeMain = () => {
         setSearchQuery(query)
     }
     const handleNavigation = () => {
-        navigation.navigate('Restaurant', { query: searchQuery.toLowerCase() })
+        navigation.navigate('Restaurant', { query: searchQuery.toLowerCase(), queryType: "name" })
         setSearchQuery("")
     }
 
@@ -52,7 +52,7 @@ const HomeMain = () => {
 
     const renderItem = ({ item }) => {
         return (
-            <TypeItem name={item.name} />
+            <TypeItem id={item.id} name={item.name} />
         )
     }
 

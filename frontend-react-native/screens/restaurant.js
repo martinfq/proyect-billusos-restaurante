@@ -6,7 +6,7 @@ import React, { useState } from "react";
 const RestaurantScreen = ({ navigation }) => {
 
     const route = useRoute()
-    const { query } = route.params
+    const { query, queryType } = route.params ? route.params : ""
 
     React.useLayoutEffect(() => {
         navigation.setOptions({ title: query ? query : "Los mas visitados" });
@@ -14,7 +14,7 @@ const RestaurantScreen = ({ navigation }) => {
 
     return (
         <View style={style.screen}>
-            <RestaurantList searchQuery={query} />
+            <RestaurantList searchQuery={query} queryType={queryType} />
         </View>
     );
 }
