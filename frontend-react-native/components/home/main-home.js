@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import { Button, FlatList, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, FlatList, Image, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 import { useWindowDimensions } from 'react-native';
 import TypeItem from "./type-item";
 import { RefreshControl } from "react-native-gesture-handler";
@@ -12,16 +12,16 @@ const HomeMain = () => {
     const { width } = useWindowDimensions();
 
     const [searchQuery, setSearchQuery] = useState("")
-
     const handleSearch = (query) => {
         setSearchQuery(query)
     }
-    const handleNavigation = () => {
-        navigation.navigate('Restaurant', { query: searchQuery.toLowerCase(), queryType: "name" })
+
+    const navigation = useNavigation()
+    const handleSearchNavigation = () => {
+        navigation.navigate('MainSearch', { query: searchQuery.toLowerCase(), queryType: "name" })
         setSearchQuery("")
     }
 
-    const navigation = useNavigation()
 
     const [data, setData] = useState([])
 
@@ -32,7 +32,6 @@ const HomeMain = () => {
         console.log('refreshing')
         setIsLoading(prevState => !prevState)
     }
-
 
     useEffect(() => {
         fetchData()
@@ -49,8 +48,7 @@ const HomeMain = () => {
         }
     }
 
-
-    const renderItem = ({ item }) => {
+    const renderFoodTypeItem = ({ item }) => {
         return (
             <TypeItem id={item.id} name={item.name} />
         )
@@ -58,11 +56,12 @@ const HomeMain = () => {
 
     return (
         <View style={styles.screen}>
-            <View style={{ alignItems: "center" }}>
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+            <View style={{ alignItems: 'center' }}>
 
-                <Text style={{ paddingBottom: 20 }}>Home Page Billusos</Text>
+                <Text style={{ paddingBottom: 20, fontSize: 40 }}>Billusos</Text>
                 <Image
-                    style={{ width: width, height: 200, marginBottom: 20, borderRadius: 10 }}
+                    style={{ width: width, height: 250, marginBottom: 5, borderRadius: 10 }}
                     source={{
                         uri: 'https://media.istockphoto.com/id/1307190527/es/foto/feliz-camarero-sirviendo-comida-a-un-grupo-de-amigos-en-un-pub.jpg?s=612x612&w=0&k=20&c=-BICd4vjkPYTHSW4zCdVd1vqbjG2Guz07i9Ctm9nzo4=',
                     }}
@@ -70,29 +69,41 @@ const HomeMain = () => {
             </View>
             <View style={styles.searchbar}>
                 <TextInput
-                    placeholder='Buscar...'
-                    style={{ margin: 10, fontSize: 25 }}
+                    placeholder='Restaurantes, locales, platos...'
+                    style={{ margin: 10, fontSize: 19 }}
                     autoCapitalize="none"
                     clearButtonMode='always'
                     value={searchQuery}
                     onChangeText={(query) => handleSearch(query)}
                 />
-                <Button title="Buscar" onPress={handleNavigation} />
+                <Button title="Buscar" onPress={handleSearchNavigation} />
             </View>
 
-            <View style={{ justifyContent: "space-around" }}>
+            <View style={{ marginVertical: 20 }}>
                 <FlatList
                     data={data}
+                    contentContainerStyle={styles.list}
+                    numColumns={3}
                     keyExtractor={item => item.id}
-                    renderItem={renderItem}
+                    renderItem={renderFoodTypeItem}
                     refreshControl={
                         <RefreshControl
                             refreshing={false}
                             onRefresh={handleRefresh}
                         />
                     }
-                    numColumns={2}
                 />
+            </View>
+
+            <View
+                style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                }}
+            />
+
+            <View>
+                <Text style={{ fontSize: 27, marginTop: 20 }}>En tendencia</Text>
             </View>
         </View>
     );
@@ -100,14 +111,18 @@ const HomeMain = () => {
 
 const styles = StyleSheet.create({
     screen: {
-        padding: 10,
+        paddingTop: StatusBar.currentHeight,
+
     },
     searchbar: {
         alignContent: 'space-around',
         borderColor: 'black',
         borderRadius: 10,
-        borderWidth: 3,
+        borderWidth: 1,
     },
+    list: {
+        alignItems: 'center'
+    }
 
 })
 export default HomeMain;
