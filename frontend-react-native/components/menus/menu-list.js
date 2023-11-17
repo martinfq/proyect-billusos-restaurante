@@ -5,7 +5,7 @@ import MenuItem from "./menu-item";
 
 const API_ENDPOINT = "http://192.168.0.138:8080/api/menus/"
 
-const MenuList = ({ restaurantID, name, isPickOne }) => {
+const MenuList = ({ restaurantID, name }) => {
 
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -31,9 +31,6 @@ const MenuList = ({ restaurantID, name, isPickOne }) => {
             }
             const response = await fetch(API_ENDPOINT + urlParam)
             const data = await response.json()
-            if (isPickOne) {
-
-            }
             setData(data)
 
         } catch (error) {
@@ -48,7 +45,8 @@ const MenuList = ({ restaurantID, name, isPickOne }) => {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
+            <Text style={styles.text}>Menus encontrados: {'\t'} {data.length}</Text>
             <FlatList
                 data={data}
                 keyExtractor={item => item.id}
@@ -63,5 +61,14 @@ const MenuList = ({ restaurantID, name, isPickOne }) => {
         </View>
     );
 }
+const styles = StyleSheet.create({
+    container: {
+        marginVertical: 5,
+    },
+    text: {
+        fontSize: 20,
+        marginLeft: 20
+    },
+})
 
 export default MenuList;

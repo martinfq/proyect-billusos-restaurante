@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const RestaurantItem = ({ id, name, logo_url, restaurant_type }) => {
+const RestaurantItem = ({ id, name, logo_url, restaurant_type, num_menus }) => {
     const navigation = useNavigation()
     return (
         <View style={{ marginVertical: 5 }}>
             <TouchableOpacity
                 style={styles.card}
-                onPress={() => navigation.navigate('RestaurantDetail', { restaurantID: id, name, logo_url, restaurant_type })}
+                onPress={() => navigation.navigate('RestaurantDetail', { restaurantID: id, name, logo_url, restaurant_type, num_menus })}
             >
                 <View style={{ justifyContent: "space-around", flexDirection: "row", alignItems: "center" }}>
                     <Image
@@ -18,6 +18,7 @@ const RestaurantItem = ({ id, name, logo_url, restaurant_type }) => {
                     <View>
                         <Text style={{ fontSize: 25 }}>{name}</Text>
                         <Text style={{ fontSize: 15 }}>{restaurant_type}</Text>
+
                     </View>
 
                 </View>

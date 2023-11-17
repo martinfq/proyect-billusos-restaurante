@@ -6,14 +6,14 @@ import RestaurantDetails from "../components/restaurants/restaurant-details";
 
 const RestaurantDetailScreen = ({ navigation }) => {
     const route = useRoute()
-    const { restaurantID, name, logo_url, restaurant_type } = route.params
+    const { restaurantID, name, logo_url, restaurant_type, num_menus } = route.params
 
     React.useLayoutEffect(() => {
         navigation.setOptions({ title: name ? name : "Restaurant" });
     }, [navigation])
 
     return (
-        <RestaurantDetails restaurantID={restaurantID} name={name} logo_url={logo_url} restaurant_type={restaurant_type} />
+        <RestaurantDetails restaurantID={restaurantID} name={name} logo_url={logo_url} restaurant_type={restaurant_type} num_menus={num_menus} />
     );
 }
 

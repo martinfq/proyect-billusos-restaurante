@@ -38,28 +38,36 @@ const TypeList = () => {
     }
 
     return (
-        <View style={{ marginVertical: 20 }}>
-            <FlatList
-                data={data}
-                contentContainerStyle={styles.list}
-                numColumns={3}
-                keyExtractor={item => item.id}
-                renderItem={renderFoodTypeItem}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={false}
-                        onRefresh={handleRefresh}
-                    />
-                }
-            />
+        <View style={styles.list}>
+            {data.map(item => (
+                <TypeItem id={item.id} name={item.name} key={item.id} />
+            ))}
+
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     list: {
-        alignItems: 'center'
+        marginVertical: 20,
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     }
 
 })
 export default TypeList;
+
+{/* <FlatList
+data={data}
+contentContainerStyle={styles.list}
+numColumns={3}
+keyExtractor={item => item.id}
+renderItem={renderFoodTypeItem}
+refreshControl={
+    <RefreshControl
+        refreshing={false}
+        onRefresh={handleRefresh}
+    />
+}
+/> */}

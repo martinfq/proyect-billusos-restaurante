@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 import MenuList from "../menus/menu-list";
 
-const RestaurantDetails = ({ restaurantID, name, logo_url, restaurant_type }) => {
+const RestaurantDetails = ({ restaurantID, name, logo_url, restaurant_type, num_menus }) => {
     return (
         <View >
             <View style={{ alignItems: "center", marginTop: 30 }}>
@@ -15,6 +15,7 @@ const RestaurantDetails = ({ restaurantID, name, logo_url, restaurant_type }) =>
                 <View style={{ alignItems: "center", marginBottom: 20 }}>
                     <Text style={{ fontSize: 37 }}>{name}</Text>
                     <Text style={{ fontSize: 15 }}>{restaurant_type}</Text>
+                    <Text style={{ fontSize: 15 }}>Numero de Menus: {'\t'}{num_menus}</Text>
                 </View>
             </View>
             <View style={styles.lineStyle} />
