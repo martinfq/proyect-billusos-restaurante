@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text } from "react-native";
+import { useState, useEffect } from "react";
+import { Button, FlatList, Image, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
+import TypeItem from "./type-item";
 import { RefreshControl } from "react-native-gesture-handler";
-import MenuItem from "./menu-item";
 
-const API_ENDPOINT = "http://192.168.0.138:8080/api/menus/"
+const API_ENDPOINT = "http://192.168.0.138:8080/api/food-type/"
 
-const MenuList = ({ restaurantID, name, isPickOne }) => {
-
+const TypeList = () => {
     const [data, setData] = useState([])
+
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -22,18 +22,8 @@ const MenuList = ({ restaurantID, name, isPickOne }) => {
 
     const fetchData = async () => {
         try {
-            let urlParam = ""
-            if (restaurantID) {
-                urlParam = '?restaurant_id=' + restaurantID
-            }
-            if (name) {
-                urlParam = '?name=' + name
-            }
-            const response = await fetch(API_ENDPOINT + urlParam)
+            const response = await fetch(API_ENDPOINT)
             const data = await response.json()
-            if (isPickOne) {
-
-            }
             setData(data)
 
         } catch (error) {
@@ -41,18 +31,20 @@ const MenuList = ({ restaurantID, name, isPickOne }) => {
         }
     }
 
-    const renderItem = ({ item }) => {
+    const renderFoodTypeItem = ({ item }) => {
         return (
-            <MenuItem img_url={item.img_url} name={item.name} price={item.price} />
+            <TypeItem id={item.id} name={item.name} />
         )
     }
 
     return (
-        <View>
+        <View style={{ marginVertical: 20 }}>
             <FlatList
                 data={data}
+                contentContainerStyle={styles.list}
+                numColumns={3}
                 keyExtractor={item => item.id}
-                renderItem={renderItem}
+                renderItem={renderFoodTypeItem}
                 refreshControl={
                     <RefreshControl
                         refreshing={false}
@@ -64,4 +56,10 @@ const MenuList = ({ restaurantID, name, isPickOne }) => {
     );
 }
 
-export default MenuList;
+const styles = StyleSheet.create({
+    list: {
+        alignItems: 'center'
+    }
+
+})
+export default TypeList;

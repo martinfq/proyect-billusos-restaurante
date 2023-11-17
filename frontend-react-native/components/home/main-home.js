@@ -1,60 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
-import { useState, useEffect } from "react";
 import { Button, FlatList, Image, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 import { useWindowDimensions } from 'react-native';
-import TypeItem from "./type-item";
-import { RefreshControl } from "react-native-gesture-handler";
-
-const API_ENDPOINT = "http://192.168.0.138:8080/api/food-type/"
+import SearchButton from "./seach-button";
+import TypeList from "./type-list";
+import MenuList from "../menus/menu-list";
 
 const HomeMain = () => {
 
     const { width } = useWindowDimensions();
 
-    const [searchQuery, setSearchQuery] = useState("")
-    const handleSearch = (query) => {
-        setSearchQuery(query)
-    }
-
-    const navigation = useNavigation()
-    const handleSearchNavigation = () => {
-        navigation.navigate('MainSearch', { query: searchQuery.toLowerCase(), queryType: "name" })
-        setSearchQuery("")
-    }
-
-
-    const [data, setData] = useState([])
-
-    const [isLoading, setIsLoading] = useState(false)
-
-
-    const handleRefresh = () => {
-        console.log('refreshing')
-        setIsLoading(prevState => !prevState)
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [isLoading])
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch(API_ENDPOINT)
-            const data = await response.json()
-            setData(data)
-
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    const renderFoodTypeItem = ({ item }) => {
-        return (
-            <TypeItem id={item.id} name={item.name} />
-        )
-    }
-
     return (
+
         <View style={styles.screen}>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ alignItems: 'center' }}>
@@ -67,33 +22,8 @@ const HomeMain = () => {
                     }}
                 />
             </View>
-            <View style={styles.searchbar}>
-                <TextInput
-                    placeholder='Restaurantes, locales, platos...'
-                    style={{ margin: 10, fontSize: 19 }}
-                    autoCapitalize="none"
-                    clearButtonMode='always'
-                    value={searchQuery}
-                    onChangeText={(query) => handleSearch(query)}
-                />
-                <Button title="Buscar" onPress={handleSearchNavigation} />
-            </View>
-
-            <View style={{ marginVertical: 20 }}>
-                <FlatList
-                    data={data}
-                    contentContainerStyle={styles.list}
-                    numColumns={3}
-                    keyExtractor={item => item.id}
-                    renderItem={renderFoodTypeItem}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={false}
-                            onRefresh={handleRefresh}
-                        />
-                    }
-                />
-            </View>
+            <SearchButton />
+            <TypeList />
 
             <View
                 style={{
@@ -114,15 +44,5 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
 
     },
-    searchbar: {
-        alignContent: 'space-around',
-        borderColor: 'black',
-        borderRadius: 10,
-        borderWidth: 1,
-    },
-    list: {
-        alignItems: 'center'
-    }
-
 })
 export default HomeMain;
