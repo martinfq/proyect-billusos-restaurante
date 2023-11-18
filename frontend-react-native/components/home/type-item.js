@@ -15,11 +15,12 @@ const styles = StyleSheet.create({
     card: {
         borderWidth: 1,
         borderColor: '#c5c5c5',
-        borderRadius: 10,
-        marginVertical: 5,
-        padding: 15,
-        marginTop: 15,
-        flexWrap: "wrap",
+        borderRadius: 8,
+        marginVertical: 10,
+        padding: 10,
+        margin: 4,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
 })

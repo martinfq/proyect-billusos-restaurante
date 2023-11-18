@@ -1,4 +1,4 @@
-import { Text, View, FlatList } from "react-native";
+import { Text, View, FlatList, StyleSheet } from "react-native";
 import { restaurantData } from "../../example-data";
 import { RefreshControl } from "react-native-gesture-handler";
 import RestaurantItem from "./restaurant-item";
@@ -62,10 +62,12 @@ const RestaurantList = ({ searchQuery, queryType }) => {
     };
 
     const renderItem = ({ item }) => {
-        return <RestaurantItem id={item.id} name={item.name} logo_url={item.logo_url} restaurant_type={item.restaurant_type} />
+        return <RestaurantItem id={item.id} name={item.name} logo_url={item.logo_url} restaurant_type={item.restaurant_type} num_menus={item.num_menus} />
     }
+
     return (
-        <View>
+        <View style={styles.container}>
+            <Text style={styles.text}>Restaurantes encontrados: {'\t'}{data.length}</Text>
             <FlatList
                 data={data}
                 keyExtractor={item => item.id}
@@ -76,9 +78,22 @@ const RestaurantList = ({ searchQuery, queryType }) => {
                         onRefresh={handleRefresh}
                     />
                 }
+                style={styles.list}
             />
         </View>
     );
 }
-
+const styles = StyleSheet.create({
+    container: {
+        marginVertical: 5,
+    },
+    text: {
+        fontSize: 20,
+        marginLeft: 20
+    },
+    list: {
+        padding: 15,
+        marginVertical: 0,
+    }
+})
 export default RestaurantList;
