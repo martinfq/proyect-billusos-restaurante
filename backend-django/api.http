@@ -1,24 +1,56 @@
 ### Obtener todos los datos de los restaurantes
-GET http://127.0.0.1:8000/api/restaurants/
+GET http://192.168.0.138:8080/api/all-restaurants/
 ### Obtener todos los datos de los menus
-GET http://127.0.0.1:8000/api/menus/
-### Obtener todos los datos de los menus y su correspondiente restaurant
-GET http://127.0.0.1:8000/api/restaurant-menu/
+GET http://192.168.0.138:8080/api/menus/
+### Obtener todos los tipos de comida
+GET http://192.168.0.138:8080/api/food-type/
 
-###Crear un nuevo proyecto
-POST http://127.0.0.1:8000/api/projects/
+###Crear un restaurante
+POST http://192.168.0.138:8080/api/all-restaurants/
 Content-Type: application/json
 
 {
-    "title": "proyecto web",
-    "description": "usando django",
-    "technology": "django"
+     "name": "McDonalds",
+     "address": null,
+     "logo_url": "https://1000marcas.net/wp-content/uploads/2019/11/McDonalds-logo.png",
+     "city": "Quito",
+    "description": "McDonald's es una franquicia de restaurantes de comida rápida estadounidense con sede en Chicago, Illinois.​ Sus principales productos son las hamburguesas, las patatas fritas, los menús para el desayuno y los refrescos",
+    "restaurant_type": 2
 }
 
-### Modificar un projecto
-PATCH http://127.0.0.1:8000/api/projects/1
+###Crear un restaurante
+POST http://192.168.0.138:8080/api/menus/ 
 Content-Type: application/json
 
 {
-    "title": "mi primer proyecto web"
+     "name": "Big Mac",
+        "price": 10.00,
+        "img_url": "https://cache-backend-mcd.mcdonaldscupones.com/media/image/product$bigmac.png/200/200/original?country=ec",
+        "description": "",
+        "is_spicy": false,
+        "have_food_allergies": false,
+        "restaurant_id": 4
+}
+
+### Modificar un menu 
+PUT http://192.168.0.138:8080/api/menus/5/ 
+Content-Type: application/json
+
+{
+    "name": "Big Mac",
+        "price": 10.50,
+        "img_url": "https://cache-backend-mcd.mcdonaldscupones.com/media/image/product$bigmac.png/200/200/original?country=ec",
+        "description": "",
+        "is_spicy": false,
+        "have_food_allergies": false,
+        "restaurant_id": 4
+ 
+}
+
+### Eliminar un menu
+DELETE http://192.168.0.138:8080/api/menus/4/ 
+Content-Type: application/json
+
+{
+    "name": "Big Mac 1",
 }

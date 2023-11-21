@@ -1,16 +1,20 @@
 from ..models import Restaurant,Menu, FoodType
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions,status
 from .serializers import RestaurantSerializer,MenuSerializer, FoodTypeSerializer
 from rest_framework.response import Response
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class RestaurantViewSet(viewsets.ModelViewSet):
     #queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    authentication_classes = []
+    permission_classes = []
 
     def get_queryset(self):
         name = self.request.query_params.get('name', None)
@@ -39,11 +43,13 @@ class RestaurantViewSet(viewsets.ModelViewSet):
         # Serializar y devolver la respuesta utilizando Response
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
+    
 
 class MenuViewSet(viewsets.ModelViewSet):
     #queryset = Menu.objects.all()
     serializer_class = MenuSerializer
+    authentication_classes = []
+    permission_classes = []
     def get_queryset(self):
         name = self.request.query_params.get('name', None)
         restaurant_id = self.request.query_params.get('restaurant_id', None)
@@ -71,6 +77,7 @@ class MenuViewSet(viewsets.ModelViewSet):
         # Serializar y devolver la respuesta utilizando Response
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
 
 class FoodTypeViewSet(viewsets.ModelViewSet):
     queryset = FoodType.objects.all()
